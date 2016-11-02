@@ -10,18 +10,37 @@ angular.module('cyberDrinks', ['ngRoute'])
     ;
 })
 
-.controller('main', function($scope, Api) {
-$scope.helloworld = 'testing';
+.controller('main', function($scope, MapAPI) {
 
+	$scope.cities = [
+		{
+			name: 'Belfast',
+			lat:  54.596099,
+			lon: -5.929351,
+			zoom: 15
+		},
+		{
+			name: 'London',
+			lat: 51.509865,
+			lon: -0.118092,
+			zoom: 13
+		}];
+
+	//Set default city as Belfast
+
+	$scope.selectedCity = $scope.cities[0];
+
+	//Change city or invoke at render
+	$scope.changeCity = function(city){
+		if (city) {
+			$scope.selectedCity = city;
+		}
+
+		var newCity = $scope.selectedCity;
+
+		MapAPI.createMap(newCity.lat, newCity.lon, newCity.zoom);
+	}
+
+	$scope.changeCity();
 })
 
-.controller('belfast', function($scope) {
-
-
-})
-
-
-.controller('london', function($scope) {
-
-
-})
