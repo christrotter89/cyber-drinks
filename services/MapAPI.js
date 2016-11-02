@@ -15,7 +15,7 @@ angular.module('cyberDrinks')
 			center: self.latLon
 		});
 
-		this.searchNearby();
+		this.searchNearby(); //Initiate the bar search
 
 		//Ensure map is centered on window resize
 		google.maps.event.addDomListener(window, "resize", function() {
@@ -23,6 +23,7 @@ angular.module('cyberDrinks')
 		    google.maps.event.trigger(self.map, "resize");
 		    self.map.setCenter(center); 
 		});
+
 	};
 
 	this.searchNearby = function(){
@@ -33,12 +34,13 @@ angular.module('cyberDrinks')
 
 		var placesQuery = {
 			location: self.latLon,
-			radius: 2500,
+			radius: 500,
 			type: 'bar'
 		};
 
-		var placesSearch = self.placesService.nearbySearch(placesQuery, function(bars, status){
-			
+		self.bounds = new google.maps.LatLngBounds(); //Get initial bounding box. Will be extended to include all markers.
+
+		var placesSearch = self.placesService.radarSearch(placesQuery, function(bars, status){
 			if (status == google.maps.places.PlacesServiceStatus.OK){
 				//Restrict places to 100 locations
 				var maxBars = Math.min(bars.length, self._maxBars);
@@ -59,18 +61,10 @@ angular.module('cyberDrinks')
 
 		var marker = new google.maps.Marker(markerOptions);
 
-		//create closure to pass in bar to enable display in infowindow on click of marker
-		google.maps.event.addListener(marker, "click", function(bar, marker){
-			return function(){
-				self.displayInfoWindow(bar, marker);
-			}	
-		}(bar,marker));
-	};
+		//Ensure that this marker is within the bounding box of the map. Extend until all markers are within the bounding box.
+		self.bounds.extend(bar.geometry.location);
+		self.map.fitBounds(self.bounds);
 
-	this.displayInfoWindow = function(bar, marker){
-		var infoWindow = new google.maps.InfoWindow();
-		infoWindow.setContent(`<b>${bar.name}</b><br/><i>${bar.vicinity}</i>`);
-		infoWindow.open(self.map, marker);
-	}
+	};
 
 })

@@ -17,13 +17,13 @@ angular.module('cyberDrinks', ['ngRoute'])
 			name: 'Belfast',
 			lat:  54.596099,
 			lon: -5.929351,
-			zoom: 16
+			zoom: 16 //Initial zoom, recalibrated by API
 		},
 		{
 			name: 'London',
 			lat: 51.509865,
 			lon: -0.118092,
-			zoom: 15
+			zoom: 15 //Initial zoom, recalibrated by API
 		}];
 
 	//Set default city as Belfast
@@ -41,6 +41,6 @@ angular.module('cyberDrinks', ['ngRoute'])
 		MapAPI.createMap(newCity.lat, newCity.lon, newCity.zoom);
 	}
 
-	$scope.changeCity();
+	$scope.changeCity(); //Fire off initial change to create map
 })
 
