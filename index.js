@@ -17,13 +17,13 @@ angular.module('cyberDrinks', ['ngRoute'])
 			name: 'Belfast',
 			lat:  54.596099,
 			lon: -5.929351,
-			zoom: 15
+			zoom: 16
 		},
 		{
 			name: 'London',
 			lat: 51.509865,
 			lon: -0.118092,
-			zoom: 13
+			zoom: 15
 		}];
 
 	//Set default city as Belfast
